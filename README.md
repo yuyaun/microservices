@@ -38,7 +38,7 @@ python app/job/run.py
 
 ```bash
 alembic init alembic
-# 修改 alembic.ini 與 env.py 指向 app.core.database:Base
+# env.py 會從 `.env` 讀取 DATABASE_URL
 # 然後建立 migration
 alembic revision --autogenerate -m "init"
 alembic upgrade head
