@@ -20,3 +20,4 @@
 - 每個 agent 都為 AI 專屬的角色設定檔
 - 可搭配 LLM IDE（如 Continue）、ChatGPT 插件、LangChain Agent 使用
 - 可轉換為 `.json` 形式供自動化工具使用
+- 所有程式碼請避免使用 `print()`，改以 `log_event()` 記錄訊息，詳見 `agents/LogAgent.md`。
