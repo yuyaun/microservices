@@ -6,3 +6,4 @@ alembic
 pydantic
 confluent-kafka
 pydantic-settings
+confluent_kafka
