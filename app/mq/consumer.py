@@ -4,9 +4,11 @@ from app.mq.handlers.order_handler import handle_order_created
 
 conf = {
     "bootstrap.servers": settings.kafka_bootstrap_servers,
-    "group.id": "order-group",
+    "group.id": settings.kafka_consumer_group,
     "auto.offset.reset": "earliest"
 }
+
+print(f"Connecting to Kafka at {settings.kafka_bootstrap_servers}...")
 
 consumer = Consumer(conf)
 consumer.subscribe([settings.kafka_topic])

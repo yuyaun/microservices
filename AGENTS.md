@@ -13,6 +13,7 @@
 | TestGenie           | 自動產生 pytest 測試               | `agents/TestGenie.md`        |
 | BugHunter           | 偵錯與分析程式錯誤                 | `agents/BugHunter.md`        |
 | RequirementAgent.md | 需求分析與功能規劃                 | `agents/RequirementAgent.md` |
+| LogAgent            | 統一 log 撰寫標準                  | `agents/LogAgent.md`         |
 
 ## 💡 說明
 
