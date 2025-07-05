@@ -25,13 +25,13 @@ docker-compose up -d
 ## 啟動 Kafka 消費者
 
 ```bash
-python3 app/mq/consumer.py
+python3 -m app.mq.consumer
 ```
 
 ## 執行 Job（可搭配 cron）
 
 ```bash
-python app/job/run.py
+python3 -m app.job.run
 ```
 
 ## Alembic 初始化
