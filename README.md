@@ -34,6 +34,14 @@ python3 -m app.mq.consumer
 python3 -m app.job.run
 ```
 
+## 啟動排程器
+
+排程器會依 `app/job/scheduler.py` 中設定的 Cron 規則執行工作。
+
+```bash
+python3 -m app.job.scheduler
+```
+
 ## Alembic 初始化
 
 ```bash
