@@ -1,6 +1,7 @@
 from confluent_kafka import Consumer
 from app.core.config import settings
 from app.mq.handlers.order_handler import handle_order_created
+from app.core.logger import log_event
 
 conf = {
     "bootstrap.servers": settings.kafka_bootstrap_servers,
@@ -8,7 +9,7 @@ conf = {
     "auto.offset.reset": "earliest"
 }
 
-print(f"Connecting to Kafka at {settings.kafka_bootstrap_servers}...")
+log_event("consumer", "connect", {"bootstrap": settings.kafka_bootstrap_servers})
 
 consumer = Consumer(conf)
 consumer.subscribe([settings.kafka_topic])
@@ -18,6 +19,6 @@ while True:
     if msg is None:
         continue
     if msg.error():
-        print("Consumer error: {}".format(msg.error()))
+        log_event("consumer", "error", {"error": str(msg.error())}, level="ERROR")
         continue
     handle_order_created(msg.value().decode("utf-8"))
