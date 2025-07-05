@@ -19,7 +19,7 @@ docker-compose up -d
 ## 啟動 FastAPI
 
 ```bash
- python3 -m uvicorn app.main:app --reload
+CRON_JOB=true python3 -m uvicorn app.main:app --reload  # 若需同時啟動排程器
 ```
 
 ## 啟動 Kafka 消費者
@@ -28,10 +28,10 @@ docker-compose up -d
 python3 -m app.mq.consumer
 ```
 
-## 執行 Job（可搭配 cron）
+## 執行單一 Job
 
 ```bash
-python3 -m app.job.run
+python3 -m app.job.jobs.cleanup_order  # 或其他 job
 ```
 
 ## 啟動排程器
