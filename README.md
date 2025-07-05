@@ -34,6 +34,7 @@ python3 -m app.mq.consumer
 python3 -m app.job.run
 ```
 
+
 ## Alembic 初始化
 
 ```bash
