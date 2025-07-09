@@ -14,3 +14,5 @@ jobs:
       uses: ./.github/actions/codex-review-action
       with:
         openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
