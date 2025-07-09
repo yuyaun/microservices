@@ -42,8 +42,8 @@ def get_pr_diff() -> str:
 
 def run_review(diff: str) -> str:
     """Submit diff to OpenAI and return the review."""
-    openai.api_key = API_KEY
-    response = openai.ChatCompletion.create(
+    client = openai.OpenAI(api_key=API_KEY)
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {
@@ -53,8 +53,7 @@ def run_review(diff: str) -> str:
             {"role": "user", "content": diff[:4000]},
         ],
     )
-    return response["choices"][0]["message"]["content"]
-
+    return response.choices[0].message.content
 
 def main() -> None:
     print("INFO: CodexReview - fetch_diff")
