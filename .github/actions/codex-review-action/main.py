@@ -1,23 +1,38 @@
 import os
 import sys
+import re
+from github import Github
+import openai
 
 # Ensure repository root is on sys.path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-from github import Github
-import openai
-
 REPO = os.getenv("GITHUB_REPOSITORY")
-PR_NUMBER = os.getenv("PR_NUMBER") or os.getenv("GITHUB_REF", "refs/pull/0").split("/")[-2]
 TOKEN = os.getenv("GITHUB_TOKEN")
 API_KEY = os.getenv("INPUT_OPENAI_API_KEY")
+
+
+def get_pr_number() -> int:
+    """Try to get PR number from env or ref."""
+    pr_number = os.getenv("PR_NUMBER")
+    if pr_number and pr_number.isdigit():
+        return int(pr_number)
+
+    ref = os.getenv("GITHUB_REF", "")
+    match = re.match(r"refs/pull/(\d+)/", ref)
+    if match:
+        return int(match.group(1))
+
+    print(f"ERROR: Cannot determine PR number. PR_NUMBER={pr_number}, GITHUB_REF={ref}")
+    raise ValueError("Failed to determine PR number.")
 
 
 def get_pr_diff() -> str:
     """Return aggregated diff text for the pull request."""
     g = Github(TOKEN)
     repo = g.get_repo(REPO)
-    pr = repo.get_pull(int(PR_NUMBER))
+    pr_number = get_pr_number()
+    pr = repo.get_pull(pr_number)
     diff_text = ""
     for file in pr.get_files():
         if file.patch:
@@ -48,7 +63,7 @@ def main() -> None:
     result = run_review(diff)
     print(f"INFO: CodexReview - review_result - {result}")
 
-    if "\u91cd\u5927\u5b89\u5168\u554f\u984c" in result or "\u4e0d\u8981\u5408\u4f75" in result:
+    if "重大安全問題" in result or "不宜合併" in result:
         print("ERROR: CodexReview - critical_issue_found")
         raise SystemExit(1)
 
