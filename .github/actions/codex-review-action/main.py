@@ -6,7 +6,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 from github import Github
 import openai
-from app.core.logger import log_event
 
 REPO = os.getenv("GITHUB_REPOSITORY")
 PR_NUMBER = os.getenv("PR_NUMBER") or os.getenv("GITHUB_REF", "refs/pull/0").split("/")[-2]
@@ -43,14 +42,14 @@ def run_review(diff: str) -> str:
 
 
 def main() -> None:
-    log_event("CodexReview", "fetch_diff", {}, "INFO")
+    print("INFO: CodexReview - fetch_diff")
     diff = get_pr_diff()
-    log_event("CodexReview", "send_to_openai", {}, "INFO")
+    print("INFO: CodexReview - send_to_openai")
     result = run_review(diff)
-    log_event("CodexReview", "review_result", {"result": result}, "INFO")
+    print(f"INFO: CodexReview - review_result - {result}")
 
     if "\u91cd\u5927\u5b89\u5168\u554f\u984c" in result or "\u4e0d\u8981\u5408\u4f75" in result:
-        log_event("CodexReview", "critical_issue_found", {}, "ERROR")
+        print("ERROR: CodexReview - critical_issue_found")
         raise SystemExit(1)
 
 
