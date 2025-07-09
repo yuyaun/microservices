@@ -42,8 +42,8 @@ def get_pr_diff() -> str:
 
 def run_review(diff: str) -> str:
     """Submit diff to OpenAI and return the review."""
-    openai.api_key = API_KEY
-    response = openai.ChatCompletion.create(
+    client = openai.OpenAI(api_key=API_KEY)
+    response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {
@@ -53,8 +53,7 @@ def run_review(diff: str) -> str:
             {"role": "user", "content": diff[:4000]},
         ],
     )
-    return response["choices"][0]["message"]["content"]
-
+    return response.choices[0].message.content
 
 def main() -> None:
     print("INFO: CodexReview - fetch_diff")
@@ -63,7 +62,8 @@ def main() -> None:
     result = run_review(diff)
     print(f"INFO: CodexReview - review_result - {result}")
 
-    if "重大安全問題" in result or "不宜合併" in result:
+    critical_issues = ["重大安全問題", "不宜合併", "巨大的安全性風險"]
+    if any(issue in result for issue in critical_issues):
         print("ERROR: CodexReview - critical_issue_found")
         raise SystemExit(1)
 
