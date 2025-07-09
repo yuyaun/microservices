@@ -17,9 +17,9 @@ client = TestClient(app)
 @pytest.mark.parametrize(
     "url,expected",
     [
-        ("/internal/v1/health/", {"status": "ok"}),
-        ("/mcm/v1/products/", {"product": "Sample product"}),
-        ("/scm/v1/orders/", {"orders": []}),
+        (f"/{os.getenv('BASE_ROUTER')}/api/internal/v1/health/", {"status": "ok"}),
+        (f"/{os.getenv('BASE_ROUTER')}/api/mcm/v1/products/", {"product": "Sample product"}),
+        (f"/{os.getenv('BASE_ROUTER')}/api/scm/v1/orders/", {"orders": []}),
     ],
 )
 def test_endpoints(url, expected):
