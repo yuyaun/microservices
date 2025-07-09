@@ -61,6 +61,15 @@ def main() -> None:
     print("INFO: CodexReview - send_to_openai")
     result = run_review(diff)
     print(f"INFO: CodexReview - review_result - {result}")
+    try:
+        g = Github(TOKEN)
+        repo = g.get_repo(REPO)
+        pr_number = get_pr_number()
+        pr = repo.get_pull(pr_number)
+        pr.create_issue_comment(result)
+        print("INFO: CodexReview - comment_created")
+    except Exception as e:
+        print(f"ERROR: CodexReview - comment_failed - {e}")
 
     critical_issues = ["重大安全問題", "不宜合併", "巨大的安全性風險"]
     if any(issue in result for issue in critical_issues):
