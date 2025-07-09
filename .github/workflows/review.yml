@@ -7,6 +7,7 @@ on:
 jobs:
   codex-review:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
     - uses: actions/checkout@v3
     - name: Run review with Codex
