@@ -11,6 +11,12 @@ REPO = os.getenv("GITHUB_REPOSITORY")
 TOKEN = os.getenv("GITHUB_TOKEN")
 API_KEY = os.getenv("INPUT_OPENAI_API_KEY")
 
+if not TOKEN:
+    print("❌ ERROR: GITHUB_TOKEN is not set.")
+    raise SystemExit(1)
+else:
+    print("✅ GITHUB_TOKEN received.")
+
 
 def get_pr_number() -> int:
     """Try to get PR number from env or ref."""
