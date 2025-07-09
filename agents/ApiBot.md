@@ -15,3 +15,12 @@
 
 - 不應在 API 中混入非 RESTful 設計
 - 不得忽略例外處理與資料驗證
+
+# Router 結構
+
+- 使用 `BASE_ROUTER` 作為 API 路由的前綴
+- 路由應使用小寫字母與連字符（-）分隔
+- Internal API 路由應使用 `{BASE_ROUTER}/api/internal/v1/` 前綴
+- MCM 路由應使用 `{BASE_ROUTER}/api/mcm/v1/` 前綴
+- SCM 路由應使用 `{BASE_ROUTER}/api/scm/v1/` 前綴
+- 內部 API 路由應使用 `{BASE_ROUTER}/api/internal/v1/` 前綴

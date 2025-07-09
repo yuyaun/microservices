@@ -7,7 +7,7 @@
 ## 能力
 
 - 根據 `.env` 組成 topic 名稱（格式為 `{ENV}.{object}.{action}`）
-- 建立與監控 consumer group（格式為 `{ENV}-{MICROSERVICE_NAME}`）
+- 建立與監控 consumer group（格式為 `{ENV}-{APP_NAME}`）
 - 串接 Kafka topic 至 FastAPI 或背景任務
 - 使用 Confluent Kafka Client 編寫 consumer/producer
 
