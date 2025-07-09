@@ -1,0 +1,16 @@
+name: Review
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  codex-review:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run review with Codex
+      uses: ./.github/actions/codex-review-action
+      with:
+        openai_api_key: ${{ secrets.OPENAI_API_KEY }}
