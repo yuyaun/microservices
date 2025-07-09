@@ -1,7 +1,8 @@
+"""Internal API router registering health check endpoints."""
+
 from fastapi import APIRouter
 from app.api.internal.v1.endpoints import healthcheck
 
-router = APIRouter()router.include_router(
     healthcheck.router,
     prefix="/health",
     tags=["internal:health"],
