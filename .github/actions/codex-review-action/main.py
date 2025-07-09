@@ -27,7 +27,7 @@ def get_pr_number() -> int:
     raise ValueError("Failed to determine PR number.")
 
 
-def get_pr_diff() -> tuple[str, Github.PullRequest.PullRequest]:
+def get_pr_diff():
     g = Github(TOKEN)
     repo = g.get_repo(REPO)
     pr_number = get_pr_number()
