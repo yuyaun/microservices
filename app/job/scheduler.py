@@ -2,7 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from app.job.jobs.cleanup_order import CleanupOrderJob
 from app.job.jobs.sync_product import SyncProductJob
-from app.core.logger import logger
+from app.core.logger import log_event
 
 
 def create_scheduler() -> BackgroundScheduler:
@@ -22,7 +22,7 @@ def create_scheduler() -> BackgroundScheduler:
         id="sync_product",
         name="sync_product",
     )
-    logger.info("Scheduler jobs registered")
+    log_event("scheduler", "register_jobs", {"jobs": ["cleanup_order", "sync_product"]})
     return scheduler
 
 
@@ -32,13 +32,13 @@ scheduler = create_scheduler()
 def start() -> None:
     """Start the background scheduler."""
     scheduler.start()
-    logger.info("Scheduler started")
+    log_event("scheduler", "start", {})
 
 
 def shutdown() -> None:
     """Shutdown the background scheduler."""
     scheduler.shutdown()
-    logger.info("Scheduler shutdown")
+    log_event("scheduler", "shutdown", {})
 
 
 if __name__ == "__main__":
@@ -51,3 +51,4 @@ if __name__ == "__main__":
             time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
         shutdown()
+

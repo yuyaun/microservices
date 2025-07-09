@@ -12,3 +12,4 @@ app.include_router(api_router, prefix=f"/{base_router}/api")
 
 if os.getenv("CRON_JOB", "false").lower() in {"1", "true", "yes"}:
     scheduler.start()
+
