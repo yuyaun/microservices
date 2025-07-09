@@ -5,15 +5,12 @@ on:
     types: [ opened, synchronize, reopened ]
 
 jobs:
-  codex_review:
+  codex-review:
     runs-on: ubuntu-latest
-    env:
-      PR_NUMBER: ${{ github.event.pull_request.number }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      INPUT_OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
+    needs: test
     steps:
     - uses: actions/checkout@v3
-
-    - name: Run Codex Review
-      uses: your-org/codex-review-action@v1
+    - name: Run review with Codex
+      uses: ./.github/actions/codex-review-action
+      with:
+        openai_api_key: ${{ secrets.OPENAI_API_KEY }}
