@@ -69,13 +69,14 @@ docker-compose exec kafka bash
 # 查詢所有 topic
 kafka-topics.sh --bootstrap-server localhost:9092 --list
 # 查詢 group
-kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list```
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+```
+
 ## 健康檢查端點
 
 服務啟動後可透過以下路徑檢查狀態：
 
+```bash
 - `/api/internal/v1/readiness`：回傳服務是否準備完成
 - `/api/internal/v1/liveness`：檢查資料庫與 Kafka 連線，成功則回傳 `{"status": "ok"}`，失敗會回傳 503
-
-
-
+```
