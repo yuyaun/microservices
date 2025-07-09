@@ -59,3 +59,15 @@ export OPENAI_API_KEY=your_openai_api_key
 docker exec -it dev-python zsh
 codex -a never "{PROMPT}"
 ```
+
+## 查詢 Kafka Topic 與 Group
+
+進入 Kafka 容器後執行以下指令：
+
+```bash
+docker-compose exec kafka bash
+# 查詢所有 topic
+kafka-topics.sh --bootstrap-server localhost:9092 --list
+# 查詢 group
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+```
