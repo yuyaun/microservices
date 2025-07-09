@@ -8,3 +8,4 @@ confluent-kafka
 pydantic-settings
 apscheduler
 httpx
+pytest
