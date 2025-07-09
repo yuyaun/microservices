@@ -7,7 +7,8 @@ from app.job import scheduler
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-app.include_router(api_router)
+base_router = os.getenv("BASE_ROUTER", "")
+app.include_router(api_router, prefix=f"/{base_router}/api")
 
 if os.getenv("CRON_JOB", "false").lower() in {"1", "true", "yes"}:
     scheduler.start()

@@ -7,3 +7,4 @@ pydantic
 confluent-kafka
 pydantic-settings
 apscheduler
+httpx
