@@ -27,8 +27,7 @@ def get_pr_number() -> int:
     raise ValueError("Failed to determine PR number.")
 
 
-def get_pr_diff() -> str:
-    """Return aggregated diff text for the pull request."""
+def get_pr_diff() -> tuple[str, Github.PullRequest.PullRequest]:
     g = Github(TOKEN)
     repo = g.get_repo(REPO)
     pr_number = get_pr_number()
@@ -37,7 +36,7 @@ def get_pr_diff() -> str:
     for file in pr.get_files():
         if file.patch:
             diff_text += f"\n--- {file.filename} ---\n{file.patch}\n"
-    return diff_text
+    return diff_text, pr
 
 
 def run_review(diff: str) -> str:
@@ -57,11 +56,12 @@ def run_review(diff: str) -> str:
 
 def main() -> None:
     print("INFO: CodexReview - fetch_diff")
-    diff = get_pr_diff()
+    diff, pr = get_pr_diff()
     print("INFO: CodexReview - send_to_openai")
     result = run_review(diff)
     print(f"INFO: CodexReview - review_result - {result}")
 
+    pr.create_issue_comment(f"🤖 **Codex Review**\n\n{result}")
     critical_issues = ["重大安全問題", "不宜合併", "巨大的安全性風險"]
     if any(issue in result for issue in critical_issues):
         print("ERROR: CodexReview - critical_issue_found")
