@@ -62,7 +62,8 @@ def main() -> None:
     result = run_review(diff)
     print(f"INFO: CodexReview - review_result - {result}")
 
-    if "重大安全問題" in result or "不宜合併" in result:
+    critical_issues = ["重大安全問題", "不宜合併", "巨大的安全性風險"]
+    if any(issue in result for issue in critical_issues):
         print("ERROR: CodexReview - critical_issue_found")
         raise SystemExit(1)
 
