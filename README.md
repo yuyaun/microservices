@@ -16,6 +16,20 @@ pip3 install -r requirements.txt
 docker-compose up -d
 ```
 
+## Helm 部署
+
+若要在 Kubernetes 安裝此服務，可使用 `helm` 目錄下的 chart：
+
+```bash
+helm install microservice ./helm/microservice \
+  --set image.repository=myrepo/microservice
+```
+
+可透過 `values.yaml` 調整是否自動建立 PostgreSQL 與 Kafka。若 `postgres.enabled` 或
+`kafka.enabled` 設為 `false`，請另外填入 `postgres.url`、`postgres.user`、
+`postgres.password` 以及 `kafka.url` 等連線資訊，密碼將寫入 `Secret`。
+若啟用，兩者會以 StatefulSet 部署以保留資料。
+
 ## 啟動 FastAPI
 
 ```bash

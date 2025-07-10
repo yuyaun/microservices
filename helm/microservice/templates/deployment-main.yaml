@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "microservice.fullname" . }}
+  labels:
+    app: {{ include "microservice.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "microservice.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "microservice.name" . }}
+    spec:
+      containers:
+        - name: app
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python3", "-m", "uvicorn", "app.main:app", "--reload"]
+          env:
+            - name: DATABASE_URL
+              value: {{ .Values.postgres.url | quote }}
+            - name: KAFKA_URL
+              value: {{ .Values.kafka.url | quote }}
+            - name: KAFKA_USER
+              value: {{ .Values.kafka.user | quote }}
+            - name: CRON_JOB
+              value: "false"
+          envFrom:
+            - secretRef:
+                name: {{ include "microservice.fullname" . }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+
