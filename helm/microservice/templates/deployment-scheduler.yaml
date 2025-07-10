@@ -1,0 +1,37 @@
+{{- if .Values.scheduler.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "microservice.fullname" . }}-scheduler
+  labels:
+    app: {{ include "microservice.name" . }}-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "microservice.name" . }}-scheduler
+  template:
+    metadata:
+      labels:
+        app: {{ include "microservice.name" . }}-scheduler
+    spec:
+      containers:
+        - name: scheduler
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python3", "-m", "app.job.scheduler"]
+          env:
+            - name: DATABASE_URL
+              value: {{ .Values.postgres.url | quote }}
+            - name: KAFKA_URL
+              value: {{ .Values.kafka.url | quote }}
+            - name: KAFKA_USER
+              value: {{ .Values.kafka.user | quote }}
+            - name: CRON_JOB
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: {{ include "microservice.fullname" . }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+{{- end }}
+

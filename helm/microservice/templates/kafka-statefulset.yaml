@@ -1,0 +1,28 @@
+{{- if .Values.kafka.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "microservice.fullname" . }}-kafka
+spec:
+  serviceName: {{ include "microservice.fullname" . }}-kafka
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "microservice.name" . }}-kafka
+  template:
+    metadata:
+      labels:
+        app: {{ include "microservice.name" . }}-kafka
+    spec:
+      containers:
+        - name: kafka
+          image: bitnami/kafka:3
+          env:
+            - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+              value: "localhost:2181"
+            - name: ALLOW_PLAINTEXT_LISTENER
+              value: "yes"
+          ports:
+            - containerPort: 9092
+{{- end }}
+
