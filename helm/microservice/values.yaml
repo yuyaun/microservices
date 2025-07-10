@@ -1,0 +1,38 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: myrepo/microservice
+  tag: latest
+  pullPolicy: IfNotPresent
+
+scheduler:
+  enabled: true
+
+postgres:
+  enabled: false
+  url: "postgresql://postgres:5432/db"
+  user: postgres
+  password: ""
+
+kafka:
+  enabled: false
+  url: "kafka:9092"
+  user: ""
+  password: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  cpuUtilization: 80
+
+pdb:
+  enabled: true
+  minAvailable: 1
